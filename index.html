@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>노션 폼</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      input,
+      textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      button {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>노션 데이터베이스 폼</h1>
+    <form id="notionForm">
+      <div class="form-group">
+        <label for="title">제목</label>
+        <input type="text" id="title" name="title" required />
+      </div>
+      <div class="form-group">
+        <label for="content">내용</label>
+        <textarea id="content" name="content" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="category">카테고리</label>
+        <input type="text" id="category" name="category" required />
+      </div>
+      <button type="submit">제출하기</button>
+    </form>
+
+    <script>
+      document
+        .getElementById("notionForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const formData = {
+            title: document.getElementById("title").value,
+            content: document.getElementById("content").value,
+            category: document.getElementById("category").value
+          };
+
+          try {
+            const response = await fetch("/submit", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+              alert("성공적으로 제출되었습니다!");
+              document.getElementById("notionForm").reset();
+            } else {
+              alert("제출 중 오류가 발생했습니다.");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("제출 중 오류가 발생했습니다.");
+          }
+        });
+    </script>
+  </body>
+</html>
